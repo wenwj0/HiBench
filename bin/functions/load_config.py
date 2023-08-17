@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 # Licensed to the Apache Software Foundation (ASF) under one or more
 # contributor license agreements.  See the NOTICE file distributed with
 # this work for additional information regarding copyright ownership.
@@ -88,8 +88,8 @@ def execute_cmd(cmdline, timeout):
         time.sleep(0.1)  # Wait a little
         seconds_passed = time.time() - t_begin
 
-        stdout += nonBlockRead(p.stdout)
-        stderr += nonBlockRead(p.stderr)
+        stdout += "%s%s"%(stdout, nonBlockRead(p.stdout))
+        stderr += "%s%s"%(stderr, nonBlockRead(p.stderr))
 
     if seconds_passed >= timeout and timeout > 0:
         try:
@@ -170,7 +170,7 @@ def parse_conf(conf_root, workload_config_file):
 
 def override_conf_from_environment():
     # override values from os environment variable settings
-    for env_name, prop_name in HiBenchEnvPropMappingMandatory.items() + HiBenchEnvPropMapping.items():
+    for env_name, prop_name in list(HiBenchEnvPropMappingMandatory.items()) + list(HiBenchEnvPropMapping.items()):
         # The overrides from environments has 2 premises, the second one is either
         # the prop_name is not set in advance by config files or the conf line
         # itself set an env variable to a hibench conf
@@ -221,7 +221,7 @@ def load_config(conf_root, workload_config_file, workload_folder, patching_confi
     check_config()
     #import pdb;pdb.set_trace()
     # Export config to file, let bash script to import as local variables.
-    print export_config(workload_name, framework_name)
+    print(export_config(workload_name, framework_name))
 
 
 def check_config():             # check configures
@@ -230,7 +230,7 @@ def check_config():             # check configures
         assert HibenchConf.get(
             prop_name, None) is not None, "Mandatory configure missing: %s" % prop_name
     # Ensure all ref values in configure has been expanded
-    for _, prop_name in HiBenchEnvPropMappingMandatory.items() + HiBenchEnvPropMapping.items():
+    for _, prop_name in list(HiBenchEnvPropMappingMandatory.items()) + list(HiBenchEnvPropMapping.items()):
         assert "${" not in HibenchConf.get(prop_name, ""), "Unsolved ref key: %s. \n    Defined at %s:\n    Unsolved value:%s\n" % (
             prop_name, HibenchConfRef.get(prop_name, "unknown"), HibenchConf.get(prop_name, "unknown"))
 
@@ -631,7 +631,7 @@ def export_config(workload_name, framework_name):
 
     # generate configure for hibench
     sources = defaultdict(list)
-    for env_name, prop_name in HiBenchEnvPropMappingMandatory.items() + HiBenchEnvPropMapping.items():
+    for env_name, prop_name in list(HiBenchEnvPropMappingMandatory.items()) + list(HiBenchEnvPropMapping.items()):
         source = HibenchConfRef.get(prop_name, 'None')
         sources[source].append('%s=%s' % (env_name, HibenchConf.get(prop_name, '')))
 

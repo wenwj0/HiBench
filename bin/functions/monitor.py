@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 # Licensed to the Apache Software Foundation (ASF) under one or more
 # contributor license agreements.  See the NOTICE file distributed with
 # this work for additional information regarding copyright ownership.
@@ -17,7 +17,7 @@
 import threading, subprocess, re, os, sys, signal, socket
 from time import sleep, time
 from contextlib import closing
-import traceback, thread
+import traceback, _thread
 from datetime import datetime
 from collections import namedtuple
 from pprint import pprint
@@ -485,7 +485,7 @@ while 1:
     with p.ssh_client("localhost", "python -u -c \"{s}\"".format(s=s)) as f:
         while 1:
             l = f.readline()
-            print l.rstrip()
+            print(l.rstrip())
             if not l: break
     p.ssh_close()
 
@@ -838,7 +838,7 @@ if __name__=="__main__":
     nodes_to_monitor = sys.argv[6:]
     pid=os.fork()
     if pid:                               #parent
-        print pid
+        print(pid)
     else:                                 #child
         os.close(0)
         os.close(1)

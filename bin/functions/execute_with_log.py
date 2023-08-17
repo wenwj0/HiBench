@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 # Licensed to the Apache Software Foundation (ASF) under one or more
 # contributor license agreements.  See the NOTICE file distributed with
 # this work for additional information regarding copyright ownership.
@@ -89,7 +89,7 @@ def execute(workload_result_file, command_lines):
 
         try:
             line = line.rstrip()
-            log_file.write(line+"\n")
+            log_file.write(str(line)+"\n")
             log_file.flush()
         except KeyboardInterrupt:
             proc.terminate()
@@ -127,7 +127,7 @@ def execute(workload_result_file, command_lines):
             bypass_error_condition = table_not_found_in_log or database_default_exist_in_log(lline) or uri_with_key_not_found_in_log(lline)
             if not bypass_error_condition:
                 COLOR = "Red"
-                sys.stdout.write((u"{%s}{line}{Color_Off}{ClearEnd}\n" % COLOR).format(line=line,**Color).encode('utf-8'))
+                sys.stdout.write((str(u"{%s}{line}{Color_Off}{ClearEnd}\n" % COLOR).format(line=line,**Color).encode('utf-8')))
             
         else:
             if len(line) >= width:
